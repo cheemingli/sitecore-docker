@@ -61,6 +61,18 @@ partial class Build : NukeBuild
     [Parameter("SXA Commerce package")]
     readonly string SCXA_PACKAGE = "Sitecore Commerce Experience Accelerator 3.0.108.scwdp.zip";
 
+    [Parameter("Habitat Images package")]
+    readonly string HABITAT_IMAGES_PACKAGE = "Sitecore Commerce Experience Accelerator 3.0.108.scwdp.zip";
+
+    [Parameter("SXA Storefront package")]
+    readonly string SXA_STOREFRONT_PACKAGE = "Sitecore Commerce Experience Accelerator Storefront 3.0.108.scwdp.zip";
+
+    [Parameter("SXA Storefront Theme package")]
+    readonly string SXA_STOREFRONT_THEME_PACKAGE = "Sitecore Commerce Experience Accelerator Storefront Themes 3.0.108.scwdp.zip";
+
+    [Parameter("SXA Storefront Catalog package")]
+    readonly string SXA_STOREFRONT_CATALOG_PACKAGE = "Sitecore Commerce Experience Accelerator Habitat Catalog 3.0.108.scwdp.zip";
+
     [Parameter("Web transform tool")]
     readonly string WEB_TRANSFORM_TOOL = "Microsoft.Web.XmlTransform.dll";
 
@@ -225,6 +237,39 @@ partial class Build : NukeBuild
             );
         });
     
+    Target XcSitecoreStorefront => _ => _
+        .Requires(() => File.Exists(Files / COMMERCE_SIF_PACKAGE))
+        .Requires(() => File.Exists(Files / PSE_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_PACKAGE))
+        .Requires(() => File.Exists(Files / HABITAT_IMAGES_PACKAGE))
+        .Requires(() => File.Exists(Files / SCXA_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_STOREFRONT_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_STOREFRONT_THEME_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_STOREFRONT_CATALOG_PACKAGE))
+        .Requires(() => File.Exists(Files / WEB_TRANSFORM_TOOL))
+        .DependsOn(XcSitecore)
+        .Executes(() => {
+            var baseImage = XcImageName("sitecore");
+
+            DockerBuild(x => x
+                .SetPath(".")
+                .SetFile("xc/sitecore/storefront/Dockerfile")
+                .SetTag(XcImageName("sitecore-storefront"))
+                .SetBuildArg(new string[] {
+                    $"BASE_IMAGE={baseImage}",
+                    $"COMMERCE_SIF_PACKAGE={COMMERCE_SIF_PACKAGE}",
+                    $"PSE_PACKAGE={PSE_PACKAGE}",
+                    $"SXA_PACKAGE={SXA_PACKAGE}",
+                    $"HABITAT_IMAGES_PACKAGE={HABITAT_IMAGES_PACKAGE}",
+                    $"SCXA_PACKAGE={SCXA_PACKAGE}",
+                    $"SXA_STOREFRONT_PACKAGE={SXA_STOREFRONT_PACKAGE}",
+                    $"SXA_STOREFRONT_THEME_PACKAGE={SXA_STOREFRONT_THEME_PACKAGE}",
+                    $"SXA_STOREFRONT_CATALOG_PACKAGE={SXA_STOREFRONT_CATALOG_PACKAGE}",
+                    $"WEB_TRANSFORM_TOOL={WEB_TRANSFORM_TOOL}"
+                })
+            );
+        });
+    
     Target XcMssqlSxa => _ => _
         .Requires(() => File.Exists(Files / PSE_PACKAGE))
         .Requires(() => File.Exists(Files / SXA_PACKAGE))
@@ -242,6 +287,36 @@ partial class Build : NukeBuild
                     $"PSE_PACKAGE={PSE_PACKAGE}",
                     $"SXA_PACKAGE={SXA_PACKAGE}",
                     $"SCXA_PACKAGE={SCXA_PACKAGE}"
+                })
+            );
+        });
+    
+    Target XcMssqlStorefront => _ => _
+        .Requires(() => File.Exists(Files / PSE_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_PACKAGE))
+        .Requires(() => File.Exists(Files / SCXA_PACKAGE))
+        .Requires(() => File.Exists(Files / HABITAT_IMAGES_PACKAGE))
+        .Requires(() => File.Exists(Files / SCXA_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_STOREFRONT_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_STOREFRONT_THEME_PACKAGE))
+        .Requires(() => File.Exists(Files / SXA_STOREFRONT_CATALOG_PACKAGE))
+        .DependsOn(XcMssql)
+        .Executes(() => {
+            var baseImage = XcImageName("mssql");
+
+            DockerBuild(x => x
+                .SetPath(".")
+                .SetFile("xc/mssql/storefront/Dockerfile")
+                .SetTag(XcImageName("mssql-storefront"))
+                .SetBuildArg(new string[] {
+                    $"BASE_IMAGE={baseImage}",
+                    $"PSE_PACKAGE={PSE_PACKAGE}",
+                    $"SXA_PACKAGE={SXA_PACKAGE}",
+                    $"HABITAT_IMAGES_PACKAGE={HABITAT_IMAGES_PACKAGE}",
+                    $"SCXA_PACKAGE={SCXA_PACKAGE}",
+                    $"SXA_STOREFRONT_PACKAGE={SXA_STOREFRONT_PACKAGE}",
+                    $"SXA_STOREFRONT_THEME_PACKAGE={SXA_STOREFRONT_THEME_PACKAGE}",
+                    $"SXA_STOREFRONT_CATALOG_PACKAGE={SXA_STOREFRONT_CATALOG_PACKAGE}"
                 })
             );
         });

@@ -1,0 +1,27 @@
+# escape=`
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+ARG PSE_PACKAGE
+ARG SXA_PACKAGE
+ARG HABITAT_IMAGES_PACKAGE
+ARG SCXA_PACKAGE
+ARG SXA_STOREFRONT_PACKAGE
+ARG SXA_STOREFRONT_THEME_PACKAGE
+ARG SXA_STOREFRONT_CATALOG_PACKAGE
+
+COPY files/$PSE_PACKAGE ${INSTALL_PATH}/
+COPY files/$SXA_PACKAGE ${INSTALL_PATH}/
+COPY files/$HABITAT_IMAGES_PACKAGE ${INSTALL_PATH}/
+COPY files/$SCXA_PACKAGE ${INSTALL_PATH}/
+COPY files/$SXA_STOREFRONT_PACKAGE ${INSTALL_PATH}/
+COPY files/$SXA_STOREFRONT_THEME_PACKAGE ${INSTALL_PATH}/
+COPY files/$SXA_STOREFRONT_CATALOG_PACKAGE ${INSTALL_PATH}/
+COPY xc/mssql/storefront/Extract-Databases.ps1 ${INSTALL_PATH}/
+COPY xc/mssql/storefront/Install-Databases.ps1 ${INSTALL_PATH}/
+
+RUN & (Join-Path $env:INSTALL_PATH "\\Extract-Databases.ps1") -Path $env:INSTALL_PATH; `
+    & (Join-Path $env:INSTALL_PATH "\\Install-Databases.ps1") -InstallPath $env:INSTALL_PATH -DataPath $env:DATA_PATH -DatabasePrefix $env:DB_PREFIX; ` 
+    Get-ChildItem -Path $env:INSTALL_PATH -Exclude '*.mdf', '*.ldf' -Recurse -Force | Remove-Item -Recurse -Force;

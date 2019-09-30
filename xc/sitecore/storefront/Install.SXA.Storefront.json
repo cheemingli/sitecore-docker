@@ -1,0 +1,168 @@
+{
+    "Parameters": {
+      "SiteName": {
+        "Type": "string",
+        "Description": "The name of the site to be deployed.",
+        "DefaultValue": ""
+      },
+      "InstallDir": {
+        "Type": "string",
+        "Description": "The sitecore site content path.",
+        "DefaultValue": ""
+      },
+      "SitecoreDbServer": {
+        "Type": "string",
+        "Description": "The Sitecore database server name.",
+        "DefaultValue": ".\\SQLSERVER"
+      },
+      "SqlDbPrefix": {
+        "Type": "string",
+        "Description": "The Sitecore database prefix name.",
+        "DefaultValue": ""
+      },
+      "SqlAdminUser": {
+        "Type": "string",
+        "Description": "The Sql admin user.",
+        "DefaultValue": ""
+      },
+      "SqlAdminPassword": {
+        "Type": "string",
+        "Description": "The Sql admin password.",
+        "DefaultValue": ""
+      },
+      "PowerShellExtensionsWdpFullPath": {
+        "Type": "string",
+        "Description": "PowerShell Extensions module full path",
+        "DefaultValue": ""
+      },
+      "SXAFrameworkWdpFullPath": {
+        "Type": "string",
+        "Description": "Sitecore Experience Accelerator module full path",
+        "DefaultValue": ""
+      },
+      "HabitatImagesWdpFullPath": {
+        "Type": "string",
+        "Description": "Habitat Images module wdp package full path",
+        "DefaultValue": ""
+      },
+      "SXACommerceWdpFullPath": {
+        "Type": "string",
+        "Description": "SXA Commerce module full path",
+        "DefaultValue": ""
+      },
+      "SXAStorefrontWdpFullPath": {
+        "Type": "string",
+        "Description": "SXA Storefront module full path",
+        "DefaultValue": ""
+      },
+      "SXAStorefrontThemeWdpFullPath": {
+        "Type": "string",
+        "Description": "SXA Storefront Themes module full path",
+        "DefaultValue": ""
+      },
+      "SXAStorefrontCatalogWdpFullPath": {
+        "Type": "string",
+        "Description": "SXA Storefront Catalog module full path",
+        "DefaultValue": ""
+      },
+      "MergeToolFullPath": {
+        "Type": "string",
+        "Description": "The Merge Tool full path",
+        "DefaultValue": ""
+      },
+      "Module-PowerShellExtensions:SiteName": {
+        "Type": "string",
+        "Reference": "SiteName"
+      },
+      "Module-SXAFramework:SiteName": {
+        "Type": "string",
+        "Reference": "SiteName"
+      },
+      "Module-HabitatImages:SiteName": {
+        "Type": "string",
+        "Reference": "SiteName"
+      },
+      "Module-HabitatImages:SqlDbPrefix": {
+        "Type": "string",
+        "Reference": "SqlDbPrefix"
+      },
+      "Module-HabitatImages:SqlAdminUser": {
+        "Type": "string",
+        "Reference": "SqlAdminUser"
+      },
+      "Module-HabitatImages:SqlAdminPassword": {
+        "Type": "string",
+        "Reference": "SqlAdminPassword"
+      },
+      "SXAStorefront:SXACommerceWdpFullPath": {
+        "Type": "string",
+        "Reference": "SXACommerceWdpFullPath"
+      },
+      "SXAStorefront:SXAStorefrontWdpFullPath": {
+        "Type": "string",
+        "Reference": "SXAStorefrontWdpFullPath"
+      },
+      "SXAStorefront:SXAStorefrontThemeWdpFullPath": {
+        "Type": "string",
+        "Reference": "SXAStorefrontThemeWdpFullPath"
+      },
+      "SXAStorefront:SXAStorefrontCatalogWdpFullPath": {
+        "Type": "string",
+        "Reference": "SXAStorefrontCatalogWdpFullPath"
+      },
+      "SXAStorefront:MergeToolFullPath": {
+        "Type": "string",
+        "Reference": "MergeToolFullPath"
+      },
+      "SXAStorefront:SqlAdminUser": {
+        "Type": "string",
+        "Reference": "SqlAdminUser"
+      },
+      "SXAStorefront:SqlAdminPassword": {
+        "Type": "string",
+        "Reference": "SqlAdminPassword"
+      },
+      "SXAStorefront:SitecoreDbServer": {
+        "Type": "string",
+        "Reference": "SitecoreDbServer"
+      },
+      "SXAStorefront:SqlDbPrefix": {
+        "Type": "string",
+        "Reference": "SqlDbPrefix"
+      },
+      "SXAStorefront:SiteName": {
+        "Type": "string",
+        "Reference": "SiteName"
+      },
+      "SXAStorefront:InstallDir": {
+        "Type": "string",
+        "Reference": "InstallDir"
+      }
+    },
+    "Variables": {
+      "Module-PowershellExtensions:Package.Path": "[parameter('PowerShellExtensionsWdpFullPath')]",
+      "Module-PowershellExtensions:Sql.Server": "[parameter('SitecoreDbServer')]",
+      "Module-PowershellExtensions:Sql.Module.Database": "mastercore",
+      "Module-SXAFramework:Package.Path": "[parameter('SXAFrameworkWdpFullPath')]",
+      "Module-SXAFramework:Sql.Server": "[parameter('SitecoreDbServer')]",
+      "Module-SXAFramework:Sql.Module.Database": "mastercore",
+      "Module-HabitatImages:Package.Path": "[parameter('HabitatImagesWdpFullPath')]",
+      "Module-HabitatImages:Sql.Server": "[parameter('SitecoreDbServer')]",
+      "Module-HabitatImages:Sql.Module.Database": "master"
+    },
+    "Includes": {
+      "Module-PowershellExtensions": {
+        "Source": ".\\Configuration\\Commerce\\Common\\Common.InstallWdpModule.json"
+      },
+      "Module-SXAFramework": {
+        "Source": ".\\Configuration\\Commerce\\Common\\Common.InstallWdpModule.json"
+      },
+      "Module-HabitatImages": {
+        "Source": ".\\Configuration\\Commerce\\Common\\Common.InstallWdpModule.json"
+      },
+      "SXAStorefront": {
+        "Source": ".\\Configuration\\Commerce\\SXAStorefront\\SXAStorefront.Storefront.json"
+      }
+    }
+  }
+  
