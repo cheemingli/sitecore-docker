@@ -62,7 +62,7 @@ partial class Build : NukeBuild
     readonly string SCXA_PACKAGE = "Sitecore Commerce Experience Accelerator 3.0.108.scwdp.zip";
 
     [Parameter("Habitat Images package")]
-    readonly string HABITAT_IMAGES_PACKAGE = "Sitecore Commerce Experience Accelerator 3.0.108.scwdp.zip";
+    readonly string HABITAT_IMAGES_PACKAGE = "Sitecore.Commerce.Habitat.Images.OnPrem.scwdp.zip";
 
     [Parameter("SXA Storefront package")]
     readonly string SXA_STOREFRONT_PACKAGE = "Sitecore Commerce Experience Accelerator Storefront 3.0.108.scwdp.zip";
@@ -237,7 +237,7 @@ partial class Build : NukeBuild
             );
         });
     
-    Target XcSitecoreStorefront => _ => _
+    Target XcSitecoreSxaStorefront => _ => _
         .Requires(() => File.Exists(Files / COMMERCE_SIF_PACKAGE))
         .Requires(() => File.Exists(Files / PSE_PACKAGE))
         .Requires(() => File.Exists(Files / SXA_PACKAGE))
@@ -253,8 +253,8 @@ partial class Build : NukeBuild
 
             DockerBuild(x => x
                 .SetPath(".")
-                .SetFile("xc/sitecore/storefront/Dockerfile")
-                .SetTag(XcImageName("sitecore-storefront"))
+                .SetFile("xc/sitecore/sxa-storefront/Dockerfile")
+                .SetTag(XcImageName("sitecore-sxa-storefront"))
                 .SetBuildArg(new string[] {
                     $"BASE_IMAGE={baseImage}",
                     $"COMMERCE_SIF_PACKAGE={COMMERCE_SIF_PACKAGE}",
@@ -291,7 +291,7 @@ partial class Build : NukeBuild
             );
         });
     
-    Target XcMssqlStorefront => _ => _
+    Target XcMssqlSxaStorefront => _ => _
         .Requires(() => File.Exists(Files / PSE_PACKAGE))
         .Requires(() => File.Exists(Files / SXA_PACKAGE))
         .Requires(() => File.Exists(Files / SCXA_PACKAGE))
@@ -306,8 +306,8 @@ partial class Build : NukeBuild
 
             DockerBuild(x => x
                 .SetPath(".")
-                .SetFile("xc/mssql/storefront/Dockerfile")
-                .SetTag(XcImageName("mssql-storefront"))
+                .SetFile("xc/mssql/sxa-storefront/Dockerfile")
+                .SetTag(XcImageName("mssql-sxa-storefront"))
                 .SetBuildArg(new string[] {
                     $"BASE_IMAGE={baseImage}",
                     $"PSE_PACKAGE={PSE_PACKAGE}",

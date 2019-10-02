@@ -3,10 +3,10 @@ version: '2.4'
 
 services:
   mssql:
-    image: "${IMAGE_PREFIX}mssql-storefront:${TAG}"
+    image: "${IMAGE_PREFIX}mssql-sxa-storefront:${TAG}"
 
   sitecore:
-    image: "${IMAGE_PREFIX}sitecore-storefront:${TAG}"
+    image: "${IMAGE_PREFIX}sitecore-sxa-storefront:${TAG}"
 
   solr:
     image: "${IMAGE_PREFIX}solr-sxa:${TAG}"
